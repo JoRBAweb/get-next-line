@@ -3,45 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/09 16:40:04 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/11 14:40:42 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*dst;
-
-	dst = s;
-	while (n > 0)
-	{
-		*dst = '\0';
-		n --;
-		dst ++;
-	}
-}
-
-void	*ft_calloc(size_t num, size_t size)
-{
-	void	*buffer;
-	int		total;
-
-	if (num == 0 || size == 0)
-	{
-		num = 1;
-		size = 1;
-	}
-	total = num * size;
-	buffer = malloc(total);
-	if (buffer == NULL)
-		return (NULL);
-	ft_bzero(buffer, total);
-	return (buffer);
-}
 
 size_t	ft_strlen(char *src)
 {
@@ -53,36 +22,29 @@ size_t	ft_strlen(char *src)
 	return (index);
 }
 
-t_list	*ft_lstnew(void *content)
+void	*ft_calloc(size_t num, size_t size)
 {
-	t_list	*new;
+	void			*buffer;
+	unsigned char	*dst;
+	size_t			total;
 
-	new = malloc(sizeof(*new));
-	if (new == NULL)
-		return (NULL);
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	n;
-	size_t	srclen;
-
-	n = dstsize;
-	srclen = ft_strlen(src);
-	if (n > 0)
+	if (num == 0 || size == 0)
 	{
-		while (*src && (n - 1) > 0)
-		{
-			n --;
-			*dst ++ = *src ++;
-		}
+		num = 1;
+		size = 1;
 	}
-	if (dstsize != 0)
+	total = num * size;
+	buffer = malloc(total);
+	if (buffer == NULL)
+		return (NULL);
+	dst = buffer;
+	while (total > 0)
+	{
 		*dst = '\0';
-	return (srclen);
+		total --;
+		dst ++;
+	}
+	return (buffer);
 }
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
@@ -91,8 +53,10 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	size_t	srclen;
 	size_t	i;
 
+	if (!src)
+		return (0);
 	dstlen = ft_strlen(dst);
-	srclen = ft_strlen(src);
+	srclen = ft_strlen((char *)src);
 	i = dstlen;
 	if (size <= dstlen)
 		return (srclen + size);
@@ -110,8 +74,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1)
 		return (NULL);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
+	i = ft_strlen((char *)s1);
+	j = ft_strlen((char *)s2);
 	join = ft_calloc((i + j + 1), sizeof(*join));
 	if (join == NULL)
 		return (NULL);
@@ -119,3 +83,18 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcat(join, s2, i + j + 1);
 	return (join);
 }
+
+
+/* 
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*new;
+
+	new = malloc(sizeof(*new));
+	if (new == NULL)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	return (new);
+}
+ */

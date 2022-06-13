@@ -3,51 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 15:41:20 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/09 16:43:27 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/12 10:11:45 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "stdio.h"
+#include <stdio.h>
 #include<sys/types.h>
 #include<sys/stat.h>
 #include <fcntl.h>
 
 #define BUFFER_SIZE 42
 
+static char	*ft_strdup(const char *str);
 static int	has_linebreak(char **line, char **rest, size_t lenread);
 
 char	*get_next_line(int fd)
 {
 	static char	*rest;
 	char		*line;
+	char		*temp_line;
+	char		*temp_line2;
 	size_t		lenrest;
 	size_t		lenread;
 
 	lenrest = ft_strlen(rest);
-	line = ft_calloc((BUFFER_SIZE + lenrest + 1), sizeof(*line));
+	line = (char *)ft_calloc((BUFFER_SIZE + lenrest + 1), sizeof(*line));
 	if (!line)
 		return (NULL);
-	line = ft_strjoin(rest, line);
+	ft_strlcat(line, rest, lenrest);
 	lenread = read(fd, line + lenrest, BUFFER_SIZE);
-	while(lenread)
-	{
-		if (has_linebreak(&line, &rest, lenread))
-			break ;
-		lenread = read(fd, line + lenrest, BUFFER_SIZE);
-	}
+	temp_line = ft_strdup(line);
+	//while(lenread)
+	//{
+		/* if (has_linebreak(&line, &rest, lenread))
+			break ; */
+		//temp_line = ft_strdup(line);
+		//free(line);
+		//lenread = read(fd, line, BUFFER_SIZE);
+		//temp_line2 = ft_strjoin(temp_line, line);
+	//}
 	return (line);
 }
 
 int	main(void)
 {
-	int		fd = open("test", O_RDONLY, 0);
+	int		fd = open("test.txt", O_RDONLY);
 	char	*src = get_next_line(fd);
 
-	read(fd, src, 1);
+	
+	//char	*src = ft_calloc(BUFFER_SIZE + 1, sizeof(*src));
+	//src[0] = '4';
+
+	//read(fd, src + 1, BUFFER_SIZE);
 
 	printf("%s", src);
 }
@@ -68,6 +79,23 @@ static int	has_linebreak(char **line, char **rest, size_t lenread)
 		i ++;
 	}
 	return (0);
+}
+
+static char	*ft_strdup(const char *str)
+{
+	char	*cpy;
+	size_t	size;
+
+	size = ft_strlen((char *)str) + 1;
+	cpy = ft_calloc(size, sizeof(*cpy));
+	if (cpy == NULL)
+		return (NULL);
+	while (size)
+	{
+		*cpy ++ = *(char *)str ++;
+		size --;
+	}
+	return (cpy);
 }
 
 /* 

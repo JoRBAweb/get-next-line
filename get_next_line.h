@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 08:20:45 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/09 16:40:41 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/11 14:17:52 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
@@ -23,13 +22,14 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-char	*get_next_line(int fd);
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t num, size_t size);
 size_t	ft_strlen(char *src);
-t_list	*ft_lstnew(void *content);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void	*ft_calloc(size_t num, size_t size);
+char	*ft_strdup(const char *str);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
+
+
+char	*get_next_line(int fd);
+// t_list	*ft_lstnew(void *content);
 
 #endif
