@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 15:41:20 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/14 18:01:15 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/14 20:18:04 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_next_line(int fd)
 	line = ft_calloc(BUFFER_SIZE, sizeof(*line));
 	if (!line)
 		return (NULL);
-	lenread = read(fd, line, BUFFER_SIZE);
+	lenread = 1;
 	while(lenread)
 	{
 		/* if (has_linebreak(&line, &rest, lenread))
@@ -38,15 +38,16 @@ char	*get_next_line(int fd)
 		if (rest)
 			final_line = ft_strjoin(final_line, rest);
 		final_line = ft_strjoin(final_line, line);
-		//free(line);
 		lenread = read(fd, line, BUFFER_SIZE);
+		if (lenread < BUFFER_SIZE)
+			line[lenread] = '\0';
 	}
 	return (final_line);
 }
 
 int	main(void)
 {
-	int		fd = open("test", O_RDONLY);
+	int		fd = open("test.txt", O_RDONLY);
 	char	*src = get_next_line(fd);
 
 	
