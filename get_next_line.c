@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 15:41:20 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/12 10:11:45 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:01:15 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,40 +18,35 @@
 
 #define BUFFER_SIZE 42
 
-static char	*ft_strdup(const char *str);
-static int	has_linebreak(char **line, char **rest, size_t lenread);
+/* static int	has_linebreak(char **line, char **rest, size_t lenread); */
 
 char	*get_next_line(int fd)
 {
 	static char	*rest;
 	char		*line;
-	char		*temp_line;
-	char		*temp_line2;
-	size_t		lenrest;
+	char		*final_line;
 	size_t		lenread;
 
-	lenrest = ft_strlen(rest);
-	line = (char *)ft_calloc((BUFFER_SIZE + lenrest + 1), sizeof(*line));
+	line = ft_calloc(BUFFER_SIZE, sizeof(*line));
 	if (!line)
 		return (NULL);
-	ft_strlcat(line, rest, lenrest);
-	lenread = read(fd, line + lenrest, BUFFER_SIZE);
-	temp_line = ft_strdup(line);
-	//while(lenread)
-	//{
+	lenread = read(fd, line, BUFFER_SIZE);
+	while(lenread)
+	{
 		/* if (has_linebreak(&line, &rest, lenread))
 			break ; */
-		//temp_line = ft_strdup(line);
+		if (rest)
+			final_line = ft_strjoin(final_line, rest);
+		final_line = ft_strjoin(final_line, line);
 		//free(line);
-		//lenread = read(fd, line, BUFFER_SIZE);
-		//temp_line2 = ft_strjoin(temp_line, line);
-	//}
-	return (line);
+		lenread = read(fd, line, BUFFER_SIZE);
+	}
+	return (final_line);
 }
 
 int	main(void)
 {
-	int		fd = open("test.txt", O_RDONLY);
+	int		fd = open("test", O_RDONLY);
 	char	*src = get_next_line(fd);
 
 	
@@ -59,11 +54,10 @@ int	main(void)
 	//src[0] = '4';
 
 	//read(fd, src + 1, BUFFER_SIZE);
-
-	printf("%s", src);
+		printf("%s", src);
 }
 
-static int	has_linebreak(char **line, char **rest, size_t lenread)
+/* static int	has_linebreak(char **line, char **rest, size_t lenread)
 {
 	size_t	i;
 
@@ -79,24 +73,7 @@ static int	has_linebreak(char **line, char **rest, size_t lenread)
 		i ++;
 	}
 	return (0);
-}
-
-static char	*ft_strdup(const char *str)
-{
-	char	*cpy;
-	size_t	size;
-
-	size = ft_strlen((char *)str) + 1;
-	cpy = ft_calloc(size, sizeof(*cpy));
-	if (cpy == NULL)
-		return (NULL);
-	while (size)
-	{
-		*cpy ++ = *(char *)str ++;
-		size --;
-	}
-	return (cpy);
-}
+} */
 
 /* 
 - criar var estática q recebe o resto dos caracteres q sobrarem depois do \n, 

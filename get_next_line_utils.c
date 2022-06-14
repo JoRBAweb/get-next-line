@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/11 14:40:42 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:24:05 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-size_t	ft_strlen(char *src)
+size_t	ft_strlen(char *s)
 {
-	size_t	index;
+	size_t	length;
 
-	index = 0;
-	while (src)
-		index ++;
-	return (index);
+	length = 0;
+	while (s && s[length] != '\0')
+		length ++;
+	return (length);
 }
 
 void	*ft_calloc(size_t num, size_t size)
@@ -28,11 +29,6 @@ void	*ft_calloc(size_t num, size_t size)
 	unsigned char	*dst;
 	size_t			total;
 
-	if (num == 0 || size == 0)
-	{
-		num = 1;
-		size = 1;
-	}
 	total = num * size;
 	buffer = malloc(total);
 	if (buffer == NULL)
@@ -60,7 +56,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	i = dstlen;
 	if (size <= dstlen)
 		return (srclen + size);
-	while (i < size - 1 && *src)
+	while (i < (size - 1) && *src)
 		dst[i ++] = *src ++;
 	dst[i] = '\0';
 	return (dstlen + srclen);
@@ -72,7 +68,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	j;
 	char	*join;
 
-	if (!s1)
+	if (!s1 && !s2)
 		return (NULL);
 	i = ft_strlen((char *)s1);
 	j = ft_strlen((char *)s2);
@@ -82,6 +78,23 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcat(join, s1, i + 1);
 	ft_strlcat(join, s2, i + j + 1);
 	return (join);
+}
+
+char	*ft_strldup(const char *str, size_t len)
+{
+	char	*cpy;
+	size_t	size;
+
+	size = len + 1;
+	cpy = ft_calloc(size, sizeof(char));
+	if (cpy == NULL)
+		return (NULL);
+	while (size)
+	{
+		size --;
+		cpy[size] = (char)str[size];
+	}
+	return (cpy);
 }
 
 

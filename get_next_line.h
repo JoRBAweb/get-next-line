@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 08:20:45 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/11 14:17:52 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/14 12:12:03 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-size_t	ft_strlen(char *src);
+size_t	ft_strlen(char *s);
 void	*ft_calloc(size_t num, size_t size);
-char	*ft_strdup(const char *str);
+char	*ft_strldup(const char *str, size_t len);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 
