@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/14 12:24:05 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/15 01:21:20 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 size_t	ft_strlen(char *s)
 {
@@ -62,7 +61,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (dstlen + srclen);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -70,8 +69,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	i = ft_strlen((char *)s1);
-	j = ft_strlen((char *)s2);
+	i = ft_strlen(s1);
+	j = ft_strlen(s2);
 	join = ft_calloc((i + j + 1), sizeof(*join));
 	if (join == NULL)
 		return (NULL);
@@ -96,18 +95,3 @@ char	*ft_strldup(const char *str, size_t len)
 	}
 	return (cpy);
 }
-
-
-/* 
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new;
-
-	new = malloc(sizeof(*new));
-	if (new == NULL)
-		return (NULL);
-	new->content = content;
-	new->next = NULL;
-	return (new);
-}
- */

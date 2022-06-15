@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 15:41:20 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/14 20:18:04 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/15 02:25:07 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #define BUFFER_SIZE 42
 
-/* static int	has_linebreak(char **line, char **rest, size_t lenread); */
+static char	*make_line(char *l, char *final, char **rest, size_t *lenread);
 
 char	*get_next_line(int fd)
 {
@@ -27,21 +27,26 @@ char	*get_next_line(int fd)
 	char		*final_line;
 	size_t		lenread;
 
-	line = ft_calloc(BUFFER_SIZE, sizeof(*line));
+	line = ft_calloc((BUFFER_SIZE + 1), sizeof(*line));
 	if (!line)
 		return (NULL);
 	lenread = 1;
-	while(lenread)
+	final_line = ft_strjoin(final_line, rest);
+	if (rest)
+		free(rest);
+	while(lenread > 0)
 	{
-		/* if (has_linebreak(&line, &rest, lenread))
-			break ; */
-		if (rest)
-			final_line = ft_strjoin(final_line, rest);
-		final_line = ft_strjoin(final_line, line);
 		lenread = read(fd, line, BUFFER_SIZE);
 		if (lenread < BUFFER_SIZE)
 			line[lenread] = '\0';
+		final_line = make_line(line, final_line, &rest, &lenread);
+		if (rest || (lenread == 0))
+			break ;
 	}
+	if (lenread < 0)
+		return (NULL);
+	if (line)
+		free(line);
 	return (final_line);
 }
 
@@ -49,32 +54,52 @@ int	main(void)
 {
 	int		fd = open("test.txt", O_RDONLY);
 	char	*src = get_next_line(fd);
+	char	*src2 = get_next_line(fd);
+	//src2 = get_next_line(fd);
+	//src = get_next_line(fd);
 
 	
 	//char	*src = ft_calloc(BUFFER_SIZE + 1, sizeof(*src));
 	//src[0] = '4';
 
 	//read(fd, src + 1, BUFFER_SIZE);
-		printf("%s", src);
+		printf("primeira linha:\n%s", src2);
 }
 
-/* static int	has_linebreak(char **line, char **rest, size_t lenread)
+static char	*make_line(char *l, char *final, char **rest, size_t *lenread)
 {
 	size_t	i;
+	size_t	j;
+	char	*temp;
 
 	i = 0;
-	while (i < lenread)
+	j = 0;
+	if (l[i] == '\n')
+		*lenread = 0;
+	while (i < (*lenread - 1))
 	{
-		if (*line[i] == '\n')
+		if (l[i] == '\n')
 		{
-			rest = &line[i + 1];
-			*line[i + 1] = '\0'; 
-			return (1);
+			temp = ft_strjoin(*rest, l + (i + 1));
+			while (temp[j] != '\0')
+			{
+				if (temp[j] == '\n')
+				{
+					temp[j] == '\0';
+					*rest = ft_strjoin(*rest,temp);
+				}
+				j ++;
+			}
+			
+			l[i + 1] = '\0';
+			*lenread = 0;
+			break ;
 		}
 		i ++;
 	}
-	return (0);
-} */
+	final = ft_strjoin(final, l);
+	return (final);
+}
 
 /* 
 - criar var estática q recebe o resto dos caracteres q sobrarem depois do \n, 
