@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 15:41:20 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/15 02:25:07 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/15 14:19:03 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,86 +19,95 @@
 #define BUFFER_SIZE 42
 
 static char	*make_line(char *l, char *final, char **rest, size_t *lenread);
+static void	final_free(char **line, char **temp);
 
 char	*get_next_line(int fd)
 {
 	static char	*rest;
 	char		*line;
+	char		*temp;
 	char		*final_line;
 	size_t		lenread;
 
 	line = ft_calloc((BUFFER_SIZE + 1), sizeof(*line));
+	temp = NULL;
+	lenread = 1;
 	if (!line)
 		return (NULL);
-	lenread = 1;
-	final_line = ft_strjoin(final_line, rest);
-	if (rest)
-		free(rest);
+	final_line = make_line(rest, final_line, &temp, &lenread);
+	if (temp)
+		rest = ft_strjoin("", temp);
+	printf("print of inicial rest:\t|%s|\n",rest);
 	while(lenread > 0)
 	{
 		lenread = read(fd, line, BUFFER_SIZE);
 		if (lenread < BUFFER_SIZE)
 			line[lenread] = '\0';
-		final_line = make_line(line, final_line, &rest, &lenread);
-		if (rest || (lenread == 0))
+		final_line = make_line(line, final_line, &temp, &lenread);
+		rest = ft_strjoin("", temp);
+		printf("print of rest:\t|%s|\n", rest);
+		if (lenread == 0)
 			break ;
 	}
 	if (lenread < 0)
 		return (NULL);
-	if (line)
-		free(line);
+	final_free(&line, &temp);
 	return (final_line);
 }
 
 int	main(void)
 {
 	int		fd = open("test.txt", O_RDONLY);
+	printf("\n=============LINE 1==============\n");
 	char	*src = get_next_line(fd);
-	char	*src2 = get_next_line(fd);
-	//src2 = get_next_line(fd);
-	//src = get_next_line(fd);
+	printf("\n=============LINE 2==============\n");
+	src = get_next_line(fd);
+	printf("\n=============LINE 3==============\n");
+	src = get_next_line(fd);
+	/* printf("\n=============LINE 4==============\n");
+	src = get_next_line(fd); */
 
-	
-	//char	*src = ft_calloc(BUFFER_SIZE + 1, sizeof(*src));
-	//src[0] = '4';
-
-	//read(fd, src + 1, BUFFER_SIZE);
-		printf("primeira linha:\n%s", src2);
+	printf("\n=============SAIDA NA MAIN ==============\n");
+	printf("%s", src);
 }
 
 static char	*make_line(char *l, char *final, char **rest, size_t *lenread)
 {
 	size_t	i;
-	size_t	j;
 	char	*temp;
 
 	i = 0;
-	j = 0;
+	temp = NULL;
+	printf("print of line:\t|%s|\n", l);
+	if (!l)
+		return (NULL);
 	if (l[i] == '\n')
 		*lenread = 0;
-	while (i < (*lenread - 1))
+	while (i < ft_strlen(l))
 	{
 		if (l[i] == '\n')
 		{
-			temp = ft_strjoin(*rest, l + (i + 1));
-			while (temp[j] != '\0')
-			{
-				if (temp[j] == '\n')
-				{
-					temp[j] == '\0';
-					*rest = ft_strjoin(*rest,temp);
-				}
-				j ++;
-			}
-			
-			l[i + 1] = '\0';
+			i ++;
+			temp = ft_strjoin(temp, l + i);
+			printf("print of temp:\t|%s|\n", temp);
+			l[i] = '\0';
 			*lenread = 0;
 			break ;
 		}
 		i ++;
 	}
+	*rest = ft_strjoin(*rest,temp);
 	final = ft_strjoin(final, l);
+	printf("print of final:\t|%s|\n", final);
 	return (final);
+}
+
+static void	final_free(char **line, char **temp)
+{
+	if (*line)
+		free(*line);
+	if (*temp)
+		free(*temp);
 }
 
 /* 

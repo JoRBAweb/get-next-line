@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/15 01:21:20 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/15 09:51:58 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (join);
 }
 
-char	*ft_strldup(const char *str, size_t len)
+/* char	*ft_strldup(const char *str, size_t len)
 {
 	char	*cpy;
 	size_t	size;
@@ -94,4 +94,4 @@ char	*ft_strldup(const char *str, size_t len)
 		cpy[size] = (char)str[size];
 	}
 	return (cpy);
-}
+} */
