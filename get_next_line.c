@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:03:08 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/19 18:20:50 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/19 18:41:12 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int	main(void)
 	src = get_next_line(fd);
 	printf("\n=============LINE 13==============\n");
 	src = get_next_line(fd);
-	/* printf("\n=============LINE 14==============\n");
-	src = get_next_line(fd); */
+	printf("\n=============LINE 14==============\n");
+	src = get_next_line(fd);
 	printf("%s", src);
 }
 
@@ -127,12 +127,12 @@ static char	*get_line(char *src, size_t len)
 
 static char	*store_rest(char *storage, size_t len)
 {
-	char	*temp;
+	char	*new_storage;
 
-	temp = NULL;
+	new_storage = NULL;
 	if (storage[len])
-		temp = ft_strjoin(&temp, storage + len);
+		new_storage = ft_strjoin(&new_storage, storage + len);
 	if (storage)
 		free(storage);
-	return (temp);
+	return (new_storage);
 }
