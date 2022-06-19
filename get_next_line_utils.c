@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/18 19:16:21 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/19 03:25:25 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,22 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (dstlen + srclen);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char **s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
 	char	*join;
 
-	if (!s1 && !s2)
+	if (!*s1 && !s2)
 		return (NULL);
-	i = ft_strlen(s1);
+	i = ft_strlen(*s1);
 	j = ft_strlen(s2);
 	join = ft_calloc((i + j + 1), sizeof(char));
 	if (join == NULL)
 		return (NULL);
-	ft_strlcat(join, s1, i + 1);
+	ft_strlcat(join, *s1, i + 1);
 	ft_strlcat(join, s2, i + j + 1);
+	free(*s1);
 	return (join);
 }
 
