@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 08:20:45 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/15 01:25:50 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/18 14:53:52 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*ft_calloc(size_t num, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strldup(const char *str, size_t len);
-
+size_t	find_linebreak(const char *s);
 char	*get_next_line(int fd);
 
 #endif

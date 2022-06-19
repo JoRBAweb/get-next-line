@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 16:37:10 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/15 09:51:58 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:16:21 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	i = ft_strlen(s1);
 	j = ft_strlen(s2);
-	join = ft_calloc((i + j + 1), sizeof(*join));
+	join = ft_calloc((i + j + 1), sizeof(char));
 	if (join == NULL)
 		return (NULL);
 	ft_strlcat(join, s1, i + 1);
@@ -79,19 +79,18 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (join);
 }
 
-/* char	*ft_strldup(const char *str, size_t len)
+size_t	find_linebreak(const char *s)
 {
-	char	*cpy;
-	size_t	size;
+	size_t	i;
 
-	size = len + 1;
-	cpy = ft_calloc(size, sizeof(char));
-	if (cpy == NULL)
-		return (NULL);
-	while (size)
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] != '\n')
 	{
-		size --;
-		cpy[size] = (char)str[size];
+		if (s[i] == '\0')
+			return (0);
+		i ++;
 	}
-	return (cpy);
-} */
+	return (i + 1);
+}
