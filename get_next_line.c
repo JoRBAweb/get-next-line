@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:03:08 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/19 03:32:21 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/19 03:35:04 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ static char	*add_read(int fd, char *rest)
 		if (lenread == 0 || find_linebreak(join))
 			break ;
 	}
-	free(line_read);
+	if (line_read)
+		free(line_read);
 	return (join);
 }
 
