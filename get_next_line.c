@@ -6,7 +6,7 @@
 /*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:03:08 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/19 03:35:04 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/19 18:20:50 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # define BUFFER_SIZE 42
 #endif
 
-static char		*add_read(int fd, char *rest);
+static char		*add_read(int fd, char *storage);
 static size_t	choose_length(const char *storage);
 static char		*get_line(char *src, size_t len);
-static char		*store_rest(char *storage);
+static char		*store_rest(char *storage, size_t len);
 
 char	*get_next_line(int fd)
 {
@@ -37,7 +37,7 @@ char	*get_next_line(int fd)
 		storage = add_read(fd, storage);
 	len = choose_length(storage);
 	line = get_line(storage, len);
-	storage = store_rest(storage);
+	storage = store_rest(storage, len);
 	return (line);
 }
 
@@ -48,7 +48,7 @@ int	main(void)
 	char	*src = get_next_line(fd);
 	printf("\n=============LINE 2==============\n");
 	src = get_next_line(fd);
-	/* printf("\n=============LINE 3==============\n");
+	printf("\n=============LINE 3==============\n");
 	src = get_next_line(fd);
 	printf("\n=============LINE 4==============\n");
 	src = get_next_line(fd);
@@ -70,12 +70,12 @@ int	main(void)
 	src = get_next_line(fd);
 	printf("\n=============LINE 13==============\n");
 	src = get_next_line(fd);
-	printf("\n=============LINE 14==============\n");
+	/* printf("\n=============LINE 14==============\n");
 	src = get_next_line(fd); */
 	printf("%s", src);
 }
 
-static char	*add_read(int fd, char *rest)
+static char	*add_read(int fd, char *storage)
 {
 	ssize_t	lenread;
 	char	*line_read;
@@ -83,7 +83,7 @@ static char	*add_read(int fd, char *rest)
 	char	*join;
 
 	lenread = 1;
-	join = ft_strjoin(&rest, "");
+	join = ft_strjoin(&storage, "");
 	line_read = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	while (lenread >= 0)
 	{
@@ -125,13 +125,13 @@ static char	*get_line(char *src, size_t len)
 	return (line);
 }
 
-static char	*store_rest(char *storage)
+static char	*store_rest(char *storage, size_t len)
 {
 	char	*temp;
 
 	temp = NULL;
-	if (storage[find_linebreak(storage)])
-		temp = ft_strjoin(&temp, storage + find_linebreak(storage));
+	if (storage[len])
+		temp = ft_strjoin(&temp, storage + len);
 	if (storage)
 		free(storage);
 	return (temp);
