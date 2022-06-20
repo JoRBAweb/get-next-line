@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joalmeid <joalmeid@student.42.rio>         +#+  +:+       +#+        */
+/*   By: joalmeid <joalmeid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:03:08 by joalmeid          #+#    #+#             */
-/*   Updated: 2022/06/19 18:41:12 by joalmeid         ###   ########.fr       */
+/*   Updated: 2022/06/20 11:09:51 by joalmeid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include <fcntl.h>
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
 
 static char		*add_read(int fd, char *storage);
 static size_t	choose_length(const char *storage);
@@ -31,7 +23,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	size_t		len;
 
-	if (fd < 0)
+	if (fd < 0 || fd >= FD_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!find_linebreak(storage))
 		storage = add_read(fd, storage);
@@ -39,40 +31,6 @@ char	*get_next_line(int fd)
 	line = get_line(storage, len);
 	storage = store_rest(storage, len);
 	return (line);
-}
-
-int	main(void)
-{
-	int		fd = open("test.txt", O_RDONLY);
-	printf("\n=============LINE 1==============\n");
-	char	*src = get_next_line(fd);
-	printf("\n=============LINE 2==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 3==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 4==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 5==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 6==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 7==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 8==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 9==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 10==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 11==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 12==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 13==============\n");
-	src = get_next_line(fd);
-	printf("\n=============LINE 14==============\n");
-	src = get_next_line(fd);
-	printf("%s", src);
 }
 
 static char	*add_read(int fd, char *storage)
@@ -84,16 +42,17 @@ static char	*add_read(int fd, char *storage)
 
 	lenread = 1;
 	join = ft_strjoin(&storage, "");
-	line_read = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	while (lenread >= 0)
 	{
+		line_read = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		lenread = read(fd, line_read, BUFFER_SIZE);
 		if (join)
 			temp = ft_strjoin(&join, "");
 		join = ft_strjoin(&temp, line_read);
-		line_read[0] = '\0';
-		if (lenread == 0 || find_linebreak(join))
+		if (lenread == 0 || find_linebreak(line_read))
 			break ;
+		if (line_read[0])
+			free(line_read);
 	}
 	if (line_read)
 		free(line_read);
